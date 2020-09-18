@@ -402,7 +402,7 @@ You should see that the Data Pump job has been successfully captured.
 
 ## Step 8 : Data Privacy Reports ##
 
-DBSAT Discoverer CSV output can be uploaded in order to run Data Privacy reports from Audit Vault (see Auditor's guide, chapter 6 - Data Privacy reports).
+DBSAT Discoverer CSV output can be uploaded in order to run Data Privacy reports from Audit Vault.
 
 We will start by loading DBSAT Discoverer’s report into Audit Vault.
 
@@ -437,7 +437,7 @@ We can finally review the built-in Data Privacy report in **Reports** > **Compli
 
 ## Step 9 : Audit Vault Alerting ##
 
-After monitoring and collecting database activity your organization may want to be alerted when certain activities occur.  It is possible to identify high-risk activities that the security team needs to be made aware of.  These may include account management and database structural changes.  The alerts will let the security team know when there has been activity in these areas
+After monitoring and collecting database activity your organization may want to be alerted when certain activities occur.  It is possible to identify high-risk activities that the security team needs to be made aware of.  These may include account management and database structural changes.  The alerts will let the security team know when there has been activity in these areas.
 
 During this lab you will:
 
@@ -451,22 +451,17 @@ We'll start by modifying the email template for Audit Vault Alerts.
 
 Log into the Audit Vault console as **AVAUDITOR**.
 
-Select the **Notifications** / **Email Templates** page.  From here will be able to manage the existing template definitions and create new ones.  
+Select the **Settings** / **Email Templates** page and click on **Alert Notification Template** to edit the template.   
 
-![Alt text](./images/img42.png " ")
+Add the **#AlertStatus#** field into the email subject, as shown in the screen below.  Click the **Save** button once completed.
 
-Edit the **Alert Notification** Template, which is the default template used for sending emails.  You could create a new template, but for the purpose of this lab we will just edit the existing one.  Add the **#AlertStatus#** field into the email subject, as shown in the screen below.  Click the **Save** button once completed.
+![Alt text](./images/av20c_img39.png " ")
 
-![Alt text](./images/img43.png " ")
+We can also add a new Audit Vault **Alert Status**.
 
+Navigate to the **Alerts** tab, then to the **Manage Alert Status** page.  You will see that there are two pre-configured Alert status values.  
 
-Let's add a new Audit Vault **Alert Status**
-
-Navigate to the **Policy** tab, then to the **Alert** page.  Click on the **Manage Alert Status Values** button.
-
-![Alt text](./images/img44.png " ")
-
-You will see that there are two default Alert status values.  
+![Alt text](./images/av20c_img40.png " ")
 
 These values are used to maintain a status for each alert that is created in Audit Vault.  You can then manage alerts according to your business requirements.   
 
@@ -477,10 +472,9 @@ Click on the **Create** button. Now add a new Alert Status:
 * Status Value: **Reviewing**
 * Description: **Alert being reviewed**
 
-![Alt text](./images/img45.png " ")
+![Alt text](./images/av20c_img41.png " ")
 
-
-We will now create a new alert in Audit Vault. This alert will let us know when a new table has been created. Click on **Policy** > **Alert Definition**.  Click on the **Create** button.
+We will now create a new alert in Audit Vault. This alert will let us know when a new table has been created. Click on **Policies** > **Alert Policies**.  Click on the **Create** button.
 
 * Name: **CREATE_TABLE**
 * Secured Target Type: **Oracle Database**
@@ -493,7 +487,9 @@ We will now create a new alert in Audit Vault. This alert will let us know when 
 * Notification Action: Select the **Alert Notification Template**
 * Mailing List: **&ltLeave Blank&gt**
 
-![Alt text](./images/img46.png " ")
+Click on **Save**.
+
+![Alt text](./images/av20c_img42.png " ")
 
 Let us test that the alert is functioning! Run the following script to create once again a new table.
 
@@ -513,27 +509,20 @@ Table created.
 (…)
 ````
 
-In the Audit Vault Server, the **Home** page should now show the alert (you may have to wait for a few seconds for the alert to be reported).
+In the Audit Vault Server, the **Home** page should now show the alert (you may have to wait for a few seconds for the alert to be reported). You can see the details in **Alerts** > **Alerts** page
 
-![Alt text](./images/img47.png " ")
+![Alt text](./images/av20c_img43.png " ")
 
-You can also view the alert report:
+From this report, you can now edit the **alert status**, for example to close the alert.
 
-**Reports** > **Built-in Reports** > **Activity Reports** > **Critical Alerts**
-
-![Alt text](./images/img48.png " ")
-
-From the home page, you can now edit the **alert status**, for example to close the alert.
-
-![Alt text](./images/img49.png " ")
-
+![Alt text](./images/av20c_img44.png " ")
 
 ## Step 10 : Archiving and Purging the Audit Trail ##
 
 Audit information should follow a full lifecycle:
 
-1. Audit data is captured in the database and stored in the AUDSYS schema;
-2. Audit Vault Agent collects this information  and automatically sets a timestamp on audit data that has been collected;
+1. Audit data is captured in the database and stored in the database;
+2. Audit Vault Agent collects this information and automatically sets a timestamp on audit data records that have been collected;
 3. A database job can then run regularly and purge audit information that has been already collected;
 4. Audit information stays in Audit Vault during a customizable retention time;
 5. At the expiration of this retention time, audit data can be extracted from Audit Vault and archived;
