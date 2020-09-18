@@ -8,7 +8,7 @@ Your environment is hosted on Oracle Cloud Infrastructure with the following com
 
 * **dbclient**: a simple client machine with both 11gR2, 12cR2 and 18c instant clients. We can use it for some of the labs (e.g. when setting up network encryption).
 
-* **av**: an Audit Vault Server 12.2 which will be configured as part of the labs.
+* **av**: an Audit Vault Server 20.1 which will be configured as part of the labs.
 
 * **emcc**: an Enterprise Manager Cloud Control 13cR2 whose agent is deployed on secdb.
 
