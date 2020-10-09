@@ -32,24 +32,38 @@ From the **VNC connection to secdb**, start Firefox and connect to the Audit Vau
 
 *	URL : **https://av**
 *	Username	: **AVADMIN**
-*	Password	: **Reganam_1**
+*	Password	: **T06tron.** (in this password 06 are digits and the last character is a dot)
 
-![Alt text](./images/img02.png " ")
+Allow a security exception as we are just using a self-signed certificate.
 
-Go to **Hosts** > **Register** and enter the following values then click on **Save**.
+![Alt text](./images/av20c_img01.png " ")
+
+![Alt text](./images/av20c_img02.png " ")
+
+![Alt text](./images/av20c_img03.png " ")
+
+In Audit Vault console, go to the **Agents** tab and click **Register** to register secdb as a secure target host. Enter the following values then click on **Add**.
 
 *	Host name		: **secdb.localdomain**
 *	Host IP			: **10.0.0.2**
 
+![Alt text](./images/av20c_img04.png " ")
+
+Click on **Save** at the bottom of the dialog box.
+
+![Alt text](./images/av20c_img05.png " ")
+
 Make note of the automatically generated **Agent Activation Key** (e.g. copy and paste it to **Gedit**)
 
-![Alt text](./images/img03.png " ")
+![Alt text](./images/av20c_img06.png " ")
 
-Now, go to **Hosts (tab)** > **Hosts (menu)** > **Agent** and click on **Download for Agent Release 12.2**.
+Now click on **Agent Software** on the left hand side and download Audit Vault  agent.
+
+![Alt text](./images/av20c_img07.png " ")
 
 Save **agent.jar** to ``/home/oracle/HOL/lab08_av``
 
-![Alt text](./images/img04.png " ")
+![Alt text](./images/av20c_img08.png " ")
 
 We can now configure and start the agent.
 
@@ -94,32 +108,24 @@ Agent is running.
 
 ## Step 2 : Configuring Audit Trails ##
 
-Now that the agent has been installed and started on secdb, it is possible to connect to Audit Vault from a local browser on your workstation.
+Now that the agent has been installed and started on **secdb**, it is possible to connect to Audit Vault from a local browser on your workstation.
 
-You can then connect to the Audit Vault Server console using its public IP at the following URL:
+You can connect to the Audit Vault Server console using its public IP at the following URL:
 
 **https://&lt AV PUBLIC IP &gt**
 
 * User Name : **AVADMIN**
-* Password  : **Reganam_1**
+* Password  : **T06tron.** (do not forget the last dot!)
 
-![Alt text](./images/img05.png " ")
+![Alt text](./images/av20c_img09.png " ")
 
-Allow a security exception as we are just using a self-signed certificate.
+We can now register secure targets and create audit trails.
 
-![Alt text](./images/img06.png " ")
+From Audit Vault Server console, go to **Targets** and click on  **Register** to create a secure target:
 
-![Alt text](./images/img07.png " ")
+![Alt text](./images/av20c_img10.png " ")
 
-Please also accept to run Adobe Flash.
-
-![Alt text](./images/img08.png " ")
-
-![Alt text](./images/img09.png " ")
-
-We can now register secure targets and create the audit trails.
-
-Go to **Secured Targets** > **Target** > **Register** and create the following two secure targets:
+Create a secure target for the Container Database **cont** and another one for the Pluggable Database **pdb1** with the following **Audit Connect Details**:
 
 *	New Secured Target Name: **cont**
 *	Description: **Container database**
@@ -130,7 +136,7 @@ Go to **Secured Targets** > **Target** > **Register** and create the following t
 *	Username: **system**
 *	Password: **MyDbPwd#1**
 
-Click on **Save** in the upper right corner.
+Click on **Save**.
 
 *	New Secured Target Name: **pdb1**
 *	Description: **Pluggable database**
@@ -141,16 +147,17 @@ Click on **Save** in the upper right corner.
 *	Username: **system**
 *	Password: **MyDbPwd#1**
 
-Click on **Save** in the upper right corner.
+Click on **Save**.
 
-![Alt text](./images/img10.png " ")
+We should now have configured two targets:
 
-Let’s collect audit data created inside the database (view UNIFIED\_AUDIT\_TRAIL) and in operating system files (as per parameter audit\_file\_dest = /u01/oracle/admin/CONT/adump).
+![Alt text](./images/av20c_img11.png " ")
 
-Go to **Secured Targets** > **Audit Trails** > **Add** and create the following three audit trails:
+Let’s collect audit data created inside these two databases. First click on target **cont** and add a first audit trail (in the **Audit Data Collection** section):
 
+![Alt text](./images/av20c_img12.png " ")
 
-*Audit data stored in the Container database:*
+*Audit data stored in the Container database (unified audit):*
 
 *	audit trail type: **TABLE**
 *	collection host: **secdb.localdomain**
@@ -158,13 +165,11 @@ Go to **Secured Targets** > **Audit Trails** > **Add** and create the following 
 *	trail location: **UNIFIED\_AUDIT\_TRAIL**
 *	collection plugin: **com.oracle.av.plugin.oracle**
 
-*Audit data stored in the Pluggable database:*
+![Alt text](./images/av20c_img13.png " ")
 
-*	audit trail type: **TABLE**
-*	collection host: **secdb.localdomain**
-*	secured target: **pdb1**
-*	trail location: **UNIFIED\_AUDIT\_TRAIL**
-*	collection plugin: **com.oracle.av.plugin.oracle**
+Now let's add to **cont** a second audit trail to collect data from operating system files (as per parameter audit\_file\_dest = /u01/oracle/admin/CONT/adump).
+
+Click again on **Add** in the **Audit Data Collection** section and enter the following details:
 
 *Audit data stored outside the database:*
 
@@ -174,16 +179,53 @@ Go to **Secured Targets** > **Audit Trails** > **Add** and create the following 
 *	trail location: **/u01/oracle/db/admin/CONT/adump**
 *	collection plugin: **com.oracle.av.plugin.oracle**
 
+The collection should start automatically after a few seconds. The Collection Status shows the agent starting, collecting then being idle:
 
-The collection should start automatically after a few seconds. The Collection Status arrows will change from down (Red Arrow Down) to up (Green Arrow Up).
+![Alt text](./images/av20c_img14.png " ")
 
-![Alt text](./images/img11.png " ")
+Similarly, add to target **pdb1** an audit trail with the following details.
+
+*Audit data stored in the Pluggable database:*
+
+*	audit trail type: **TABLE**
+*	collection host: **secdb.localdomain**
+*	secured target: **pdb1**
+*	trail location: **UNIFIED\_AUDIT\_TRAIL**
+*	collection plugin: **com.oracle.av.plugin.oracle**
+
+![Alt text](./images/av20c_img15.png " ")
 
 
-## Step 3 : Using Audit Vault Reporting ##
+## Step 3 : Configuring Audit Policies ##
 
-The Oracle Audit Vault Server provides powerful built-in reports to monitor a wide range of activity, including privileged user activity and changes to database structures. The reports provide visibility into activities and provide detailed information regarding the who, what, when and where of database access.
+Audit Vault allows you to retrieve, view and modify your audit policies. Let's do it for pdb1.
 
+To do so, logout from AVADMIN and login as AVAUDITOR using the following credentials:
+
+*	Username	: **AVAUDITOR**
+*	Password	: **T06tron.**
+
+The console displays AVAUDITOR's dashboard.
+
+As AVAUDITOR, go to **Targets**, click on **pdb1** and then on **Retrieve Immediately** in the **Audit Policy** section. Also enable to refresh this every day as show below.
+
+![Alt text](./images/av20c_img16.png " ")
+
+Click on **Settings** and **Jobs** to view the status of the retrieve job.
+
+![Alt text](./images/av20c_img17.png " ")
+
+To verify pdb1's audit policies, go to **Policies** and click on **pdb1**.
+
+![Alt text](./images/av20c_img18.png " ")
+
+WE can decide to modify this by adding more policies and clicking on **Provision Unified Policy**.
+
+![Alt text](./images/av20c_img19.png " ")
+
+## Step 4 : Using Audit Vault Reporting ##
+
+The Oracle Audit Vault Server provides powerful built-in reports to monitor a wide range of activities, including privileged user activity and changes to database structures. The reports provide visibility into activities and provide detailed information regarding the who, what, when and where of database access.
 
 Let's generate new audit records by executing the following script which will create a number of violations that will be audited.
 
@@ -205,86 +247,48 @@ ERROR at line 1:
 ORA-01031: insufficient privileges
 ````
 
-To view the audit records just collected, logout from AVADMIN and login as AVAUDITOR using the following credentials:
 
-*	Username	: **AVAUDITOR**
-*	Password	: **Reganam_1**
+To view reports on the activity we have just generated, click on the **Reports** tab and **Activity Reports** .
 
-![Alt text](./images/img12.png " ")
+Select the **Data Access** report within the **Data Access & Modification** section.  View the report by clicking on its name and verify that you see audit records that were collected on today’s date.
 
-Scroll down the Audit Vault and Database Firewall Home page and notice the graphs that will begin to populate as we move through the rest of the lab. Also, you will likely see an indication of failed logins at the far right of the Failed Logins graph. Sample output is shown below.
+![Alt text](./images/av20c_img20.png " ")
 
-![Alt text](./images/img13.png " ")
+You can view failed Logins in the **Failed Login Events** report of the **Login & Logout Events** section:
 
-Click on the **Reports** tab and **Activity Reports** under **Built-in Reports**.
+![Alt text](./images/av20c_img21.png " ")
 
-Select the **Data Access** report within the **Activity Reports** section (expand that section).  View the report by clicking on its name and verify that you see audit records that were collected on today’s date.
+And Database Vault realms violations in the **Database Vault Activitys** report of the **DB Vault Activity** section:
 
-Remove the default  filters by clicking on the cross.
+![Alt text](./images/av20c_img22.png " ")
 
-![Alt text](./images/img14.png " ")
+View all details of an audit record by clicking on the left hand side icon.
 
-Add a new filter by clicking on **Actions** > **Filter** and selecting the secure target **pdb1**
+![Alt text](./images/av20c_img23.png " ")
 
-![Alt text](./images/img15.png " ")
+Various filters can be used to focus each report.
 
-![Alt text](./images/img16.png " ")
+Add a new filter by clicking on **Actions** > **Filter** and selecting the secure target **pdb1**. For example:
 
-The report should now be filtered on **pdb1** and show the audit records previously generated.
-
-Detailed information for one record can be obtained by clicking on the left side icon.
-
-![Alt text](./images/img17.png " ")
-
-
-
-![Alt text](./images/img18.png " ")
-![Alt text](./images/img19.png " ")
-
-
-Try other interesting reports, for example:
-
-**Reports** > **Activity Reports** > **Login Failures**
-
-![Alt text](./images/img20.png " ")
-
-**Reports** > **Activity Reports** > **Database Schema Changes**
-
-![Alt text](./images/img21.png " ")
-
-**Reports** > **Specialized Reports** > **Database Vault Reports** > **Database Vault Activity**
-
-![Alt text](./images/img22.png " ")
-
-![Alt text](./images/img23.png " ")
+## Step 5 : User Entitlements Reporting ##
 
 Audit Vault can also be used to retrieve and display **user entitlements** (ie granted privileges and roles).
 
 First, retrieve user entitlement data for **pdb1**.
 
-![Alt text](./images/img24.png " ")
+As AVAUDITOR, go to **Targets**, click on **pdb1** and then on **Retrieve Immediately** in the **User Entitlements** section. Also enable to refresh this every day as show below.
 
-Click a couple of times on the **Jobs** link to show the status of the job.
+![Alt text](./images/av20c_img25.png " ")
 
-![Alt text](./images/img25.png " ")
+Click on **Settings** and **Jobs** to view the status of the retrieve job.
 
-Wait until the job shows as **completed**. You should now be able to check the report.
+View the **Entitlements** report of the **Database settings** section:
 
-**Reports** > **Activity Reports** > **Entitlement Reports** > **User Accounts**
+![Alt text](./images/av20c_img26.png " ")
 
-The **User Accounts** Report displays the latest snapshot of Database users with their account profile and values for sources registered with Oracle Audit Vault.
+The reports in **Activity Reports** > **Entitlements Reports** allow to take multiple snapshots of user entitlement data and compare different snapshots to see how the data has changed over time, as it is generally be more useful to report on what has **changed** over a specific period.
 
-Initially you will not see any reporting data.  Click on **Go** (next to the **Latest** drop down).  This will bring back the latest Entitlement snapshot that you just retrieved from the source database.  
-
-![Alt text](./images/img26.png " ")
-
-It is possible to take multiple snapshots of user entitlement data.
-
-This report lets you look at the data for any of these snapshots.  You can also compare different snapshots to see how the data has changed over time, as it is generally be more useful to report on what has **changed** over a specific period.
-
-![Alt text](./images/img27.png " ")
-
-## Step 4 : Compliance Reports ##
+## Step 6 : Compliance Reports ##
 
 The reports shown here are intended to help you meet your compliance reporting requirements as quickly as possible, across **GDPR**, **PCI**, **Sarbanes-Oxley**, **HIPAA** (healthcare-related) and other areas.  In order to generate compliance reports for a secured target, you must add it to a compliance report group.
 
@@ -292,35 +296,29 @@ Let us start by adding our secure target **pdb1** as member of a compliance grou
 
 Click on the **Compliance Reports** menu and open the **Payment Card Industry (PCI) Reports** category.  Click the **Go** button, as shown in the figure below.
 
-![Alt text](./images/img28.png " ")
+![Alt text](./images/av20c_img28.png " ")
 
-Select **pdb1**, click on **Add Members** and **save** the change.
+Select **pdb1**, click on **Add** and **save** the change.
 
-![Alt text](./images/img29.png " ")
+![Alt text](./images/av20c_img29.png " ")
 
-We can now review some reports.  Click on the **Logins Failures** link under the **Payment Card Industry (PCI)** Reports section.
+We can now review some reports.  Click for example on the **All Activity (PCI)** link under the **Payment Card Industry (PCI)** Reports section.
 
-![Alt text](./images/img30.png " ")
+![Alt text](./images/av20c_img30.png " ")
 
 Select the **Database Schema Changes** report in the **PCI** section, but this time we will schedule the report so we can create a PDF version of a report, which can then be sent to people who require it.
 
-![Alt text](./images/img31.png " ")
+![Alt text](./images/av20c_img31.png " ")
 
 You can schedule a report to run immediately or on a regular basis.
-Click on Schedule to run this job immediately.
+Click on Schedule to run this job immediately (accept all the default settings).
 
-![Alt text](./images/img32.png " ")
+Once the report has been generated (click on the **Jobs** link in **Settings**), you can save it or open it.
+![Alt text](./images/av20c_img32.png " ")
 
-Once the report has been generated (click on the **Jobs** link), you can save it or open it.
+![Alt text](./images/av20c_img33.png " ")
 
-![Alt text](./images/img33.png " ")
-
-![Alt text](./images/img34.png " ")
-
-![Alt text](./images/img35.png " ")
-
-
-## Step 5 : Capturing All Activity ##
+## Step 7 : Capturing All Activity ##
 
 One advantage of Unified Auditing is that all database activities are captured in the same audit trail, including **SQL*Loader Direct Mode** or **Data Pump**.
 
@@ -398,54 +396,48 @@ Job "SYSTEM"."SYS_IMPORT_SCHEMA_01" successfully completed at Tue (...)
 
 Select the **Data Schema Changes** report in the **Built-in Reports** section and filter information on **PDB1**.
 
-You should see the audit trace of Data Pump workers (**DW00**) processes.
+You should see that the Data Pump job has been successfully captured.
 
-![Alt text](./images/img36.png " ")
+![Alt text](./images/av20c_img34.png " ")
 
-## Step 6 : Data Privacy Reports ##
+## Step 8 : Data Privacy Reports ##
 
-DBSAT Discoverer CSV output can be uploaded in order to run Data Privacy reports from Audit Vault (see Auditor's guide, chapter 6 - Data Privacy reports).
+DBSAT Discoverer CSV output can be uploaded in order to run Data Privacy reports from Audit Vault.
 
 We will start by loading DBSAT Discoverer’s report into Audit Vault.
 
 From the desktop connection to **secdb** (using **VNC**):
 
-*	Login to Audit Vault as **AVADMIN/Reganam_1**
-*	Go to **Secure Targets**
-*	Click on **pdb1** to show the **Modify Secure Target** page
-*	Scroll  down to **Sensitive Objects**
+*	Login to Audit Vault as **AVADMIN/T06tron.**
+*	Go to **Targets**
+*	Click on **pdb1** to show the details page
+*	Click on **Sensitive Objects**
 
-![Alt text](./images/img37.png " ")
+![Alt text](./images/av20c_img35.png " ")
 
 * Browse to /home/oracle/HOL/lab01\_dbsat/dbsat/install/pdb1sensitivedata_discover.csv
 *	Upload the csv file
-*	click on **Save**
+*	Do not forget to **Save** your changes!
+
+![Alt text](./images/av20c_img36.png " ")
 
 We can now add **PDB1** to the **Data Privacy compliance** report
 group and view **Data Privacy** reports.
 
-*	Login to Audit Vault Server as **AVAUDITOR** / **Reganam_1**
-*	Go to **Reports** > **Built-in Reports** > **Compliance Reports**
-*	Click on the **Go** button for **Data Privacy Reports**
+*	Login to Audit Vault Server as **AVAUDITOR** / **T06tron.**
+*	Go to **Reports** > **Compliance Reports**
+*	Click on the **Go** button for **Data Privacy Report (GDPR)**
+* Select Secured Target **pdb1** and click **Add** and **Save**.
 
-![Alt text](./images/img38.png " ")
+![Alt text](./images/av20c_img37.png " ")
 
-Select Secured Target **pdb1** and click **Add Members** and **Save**.
+We can finally review the built-in Data Privacy report in **Reports** > **Compliance Reports** > **Sensitive data**.
 
-![Alt text](./images/img39.png " ")
+![Alt text](./images/av20c_img38.png " ")
 
-We can finally review the built-in Data Privacy reports.
+## Step 9 : Audit Vault Alerting ##
 
-![Alt text](./images/img40.png " ")
-
-For instance:
-**Sensitive Data**
-
-![Alt text](./images/img41.png " ")
-
-## Step 7 : Audit Vault Alerting ##
-
-After monitoring and collecting database activity your organization may want to be alerted when certain activities occur.  It is possible to identify high-risk activities that the security team needs to be made aware of.  These may include account management and database structural changes.  The alerts will let the security team know when there has been activity in these areas
+After monitoring and collecting database activity your organization may want to be alerted when certain activities occur.  It is possible to identify high-risk activities that the security team needs to be made aware of.  These may include account management and database structural changes.  The alerts will let the security team know when there has been activity in these areas.
 
 During this lab you will:
 
@@ -459,22 +451,17 @@ We'll start by modifying the email template for Audit Vault Alerts.
 
 Log into the Audit Vault console as **AVAUDITOR**.
 
-Select the **Notifications** / **Email Templates** page.  From here will be able to manage the existing template definitions and create new ones.  
+Select the **Settings** / **Email Templates** page and click on **Alert Notification Template** to edit the template.   
 
-![Alt text](./images/img42.png " ")
+Add the **#AlertStatus#** field into the email subject, as shown in the screen below.  Click the **Save** button once completed.
 
-Edit the **Alert Notification** Template, which is the default template used for sending emails.  You could create a new template, but for the purpose of this lab we will just edit the existing one.  Add the **#AlertStatus#** field into the email subject, as shown in the screen below.  Click the **Save** button once completed.
+![Alt text](./images/av20c_img39.png " ")
 
-![Alt text](./images/img43.png " ")
+We can also add a new Audit Vault **Alert Status**.
 
+Navigate to the **Alerts** tab, then to the **Manage Alert Status** page.  You will see that there are two pre-configured Alert status values.  
 
-Let's add a new Audit Vault **Alert Status**
-
-Navigate to the **Policy** tab, then to the **Alert** page.  Click on the **Manage Alert Status Values** button.
-
-![Alt text](./images/img44.png " ")
-
-You will see that there are two default Alert status values.  
+![Alt text](./images/av20c_img40.png " ")
 
 These values are used to maintain a status for each alert that is created in Audit Vault.  You can then manage alerts according to your business requirements.   
 
@@ -485,10 +472,9 @@ Click on the **Create** button. Now add a new Alert Status:
 * Status Value: **Reviewing**
 * Description: **Alert being reviewed**
 
-![Alt text](./images/img45.png " ")
+![Alt text](./images/av20c_img41.png " ")
 
-
-We will now create a new alert in Audit Vault. This alert will let us know when a new table has been created. Click on **Policy** > **Alert Definition**.  Click on the **Create** button.
+We will now create a new alert in Audit Vault. This alert will let us know when a new table has been created. Click on **Policies** > **Alert Policies**.  Click on the **Create** button.
 
 * Name: **CREATE_TABLE**
 * Secured Target Type: **Oracle Database**
@@ -501,7 +487,9 @@ We will now create a new alert in Audit Vault. This alert will let us know when 
 * Notification Action: Select the **Alert Notification Template**
 * Mailing List: **&ltLeave Blank&gt**
 
-![Alt text](./images/img46.png " ")
+Click on **Save**.
+
+![Alt text](./images/av20c_img42.png " ")
 
 Let us test that the alert is functioning! Run the following script to create once again a new table.
 
@@ -521,27 +509,20 @@ Table created.
 (…)
 ````
 
-In the Audit Vault Server, the **Home** page should now show the alert (you may have to wait for a few seconds for the alert to be reported).
+In the Audit Vault Server, the **Home** page should now show the alert (you may have to wait for a few seconds for the alert to be reported). You can see the details in **Alerts** > **Alerts** page
 
-![Alt text](./images/img47.png " ")
+![Alt text](./images/av20c_img43.png " ")
 
-You can also view the alert report:
+From this report, you can now edit the **alert status**, for example to close the alert.
 
-**Reports** > **Built-in Reports** > **Activity Reports** > **Critical Alerts**
+![Alt text](./images/av20c_img44.png " ")
 
-![Alt text](./images/img48.png " ")
-
-From the home page, you can now edit the **alert status**, for example to close the alert.
-
-![Alt text](./images/img49.png " ")
-
-
-## Step 8 : Archiving and Purging the Audit Trail ##
+## Step 10 : Archiving and Purging the Audit Trail ##
 
 Audit information should follow a full lifecycle:
 
-1. Audit data is captured in the database and stored in the AUDSYS schema;
-2. Audit Vault Agent collects this information  and automatically sets a timestamp on audit data that has been collected;
+1. Audit data is captured in the database and stored in the database;
+2. Audit Vault Agent collects this information and automatically sets a timestamp on audit data records that have been collected;
 3. A database job can then run regularly and purge audit information that has been already collected;
 4. Audit information stays in Audit Vault during a customizable retention time;
 5. At the expiration of this retention time, audit data can be extracted from Audit Vault and archived;
