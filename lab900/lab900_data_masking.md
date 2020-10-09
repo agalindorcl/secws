@@ -258,7 +258,7 @@ Let us use a SQL Expression for **EMAIL** to construct it from the anonymized va
 Use the following expression:
 
 ````
-$ <copy>%FIRST_NAME%||'@myco.com'</copy>
+$ <copy>%LAST_NAME%||'@myco.com'</copy>
 ````
 
 
@@ -273,6 +273,12 @@ Select **Generic Credit Card Number Formatted**.
 
 ![Alt text](./images/img29.png " ")
 ![Alt text](./images/img30.png " ")
+
+If you get an error when clicking on OK, make sure that the **Package Name** and **Function Name** fileds are valued as follows:
+
+* Package Name : DBSNMP.PackageName e.g. **DBSNMP.DM_FMTLIB**
+* Function Name : Ony the Function Name e.g. **MGMT_DM_GEN_ANYC_FH**
+
 
 Similarly, set the following masking formats:
 
