@@ -62,7 +62,6 @@ EXECUTE DS_TARGET_UTIL.GRANT_ROLE('DS$AUDIT_SETTING_ROLE'); 
 
 Connect to Data Safe console by using one of the links mentioned at the end of Step 1.
 
-You should be able to use the same username and password as for your OCI tenancy.
 
 ![Alternative text](./images/img05.png " ")
 

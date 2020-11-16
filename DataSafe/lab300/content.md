@@ -78,6 +78,9 @@ On the **Start Audit Collection** page, notice the following defaults:
 
 ![alt text](./images/img12.png " ")
 
+
+Click on the "Collect Audit Data From" icon and choose to select audit data from "today".
+
 Select your database and click **Start** to start collecting audit data.
 
 A message at the top of the page states the **UNIFIED\_AUDIT\_TRAIL** is successfully created.

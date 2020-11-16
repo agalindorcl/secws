@@ -28,7 +28,7 @@ In the Oracle Data Safe Console, click the **Home** tab, and then click the **Se
 <!--![alt text](./images/img01.png " ")-->
 <img src="./images/img01.png" alt="picture" width="250" height="400" />
 
-On the **Security Assessment** page, select the check box for your target database, and then click **Assess**. The assessment job will take a few minutes to complete.
+On the **Security Assessment** page, select the check box for your target database, and then click **Assess Now**. The assessment job will take a few minutes to complete.
 
 ![alt text](./images/img02.png " ")
 

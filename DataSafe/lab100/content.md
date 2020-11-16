@@ -16,7 +16,7 @@ To complete this lab, you need to have the following:
 
 * Login credentials and a tenancy name for the Oracle Cloud Infrastructure Console
 * A compartment enabled with permission to create and use resources
-* Demo data files employees.csv and emp_extended.csv
+* Demo data files employees.csv and emp_extended.csv (they will be downloaded in step 5)
 
 ## STEP 1: Sign in to Oracle Cloud Infrastructure
 
@@ -53,8 +53,8 @@ Enter all required details:
 * CPU Core Count :	1
 * Storage (TB) : 1
 * Auto scaling : **Leave Unchecked**
-* Password :	**OraCumulus#2020**
-* Network access : Leave default selection
+* Password :	**OraclePTS#2020**
+* Network access : Leave default selection (Allow secure access from everywhere)
 * License Type : BYOL (My Organization Already owns Oracle Database…)
 
 
@@ -161,7 +161,8 @@ Use SQL Developer to view HCM data. We will anonymize this data in Lab 5.
 
 ![Page](./images/img14.png " ")
 
-Continue with **Lab 2**.
+If you are in the same time zone as your OCI Data Center (region), you can directly continue with **Lab 2**.
+
 
 ## STEP 8: Fix the database time zone if necessary
 
