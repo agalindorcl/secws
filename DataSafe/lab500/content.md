@@ -41,7 +41,7 @@ On the Select Target for Sensitive Data Discovery page, select your target datab
 
 ![alt text](./images/img04.png " ")
 
-On the Select **Sensitive Data Model** page, leave **Create** selected, enter **SDM_HCM** for the name, enable **Show and save sample data**, select the default Resource Group, and then click **Continue**.
+On the Select **Sensitive Data Model** page, leave **Create** selected, enter **SDM_HCM** for the name, enable **Show and save sample data**, select the **Compartment** assigned for the workshop, and then click **Continue**.
 
 ![alt text](./images/img05.png " ")
 
@@ -115,7 +115,7 @@ Choose to create a new masking policy:
 *	Making policy : **Create**
 *	Masking policy name : **MASK_HCM**
 *	Sensitive Data Modile : **Pick from Library**
-*	Resource Group : **Default Resource Group**
+*	Compartment : select the **compartment** assigned to the workshop
 
 ![alt text](./images/img19.png " ")
 
@@ -177,7 +177,7 @@ Click Generate Report.
 
 ![alt text](./images/img32.png " ")
 
-In the **Generate Report** dialog box, leave **PDF** selected, enter **HCM** Masking  for the description, ensure the default resource group is selected, and then click **Generate Report**.
+In the **Generate Report** dialog box, leave **PDF** selected, enter **HCM Masking**  for the description, ensure the right **Compartment** is selected, and then click **Generate Report**.
 
 ![alt text](./images/img33.png " ")
 
