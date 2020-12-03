@@ -8,14 +8,14 @@ The following is intended to outline our general product direction. It is intend
 
 ## Requirements
 
-- Session open to **secdb** with user **oracle**
-- session open to **dbclient** with user **oracle**   
+- Session open to **secdb** as user **oracle**
+- session open to **secdb** as user **dbclient**   
 
 ## Introduction  ##
 
-**Network Encryption** is included with all editions since version 11gR2 so you can configure and start using it without any additional licensing.
+**Network Encryption** is included with all editions since version 11gR2 so you can configure and start using it without any additional license to address the problem of cyber-attacks and network hijacking.
 
-On Cloud environments is configured by default. In this chapter, we will address the problem of cyber-attacks and network hijacking and we learn how to configure it in an On Premise environment.
+For databases hosted in the Oracle Cloud, network encryption is configured by default. In this chapter, we will learn how to configure it in an On Premises environment.
 
 ## Step 1: Setting Minimum Client Authentication to version 12
 
@@ -28,10 +28,10 @@ This would address the following DBSAT finding:
 
 Check that default configuration allows 11gr2 clients to connect
 
-Use a terminal window to **dbclient** (as **oracle**) and run the following to verify that we can connect to the database from an old Oracle client (11gR2).
+Use a terminal window to **secdb** (as **dbclient**) and run the following to verify that we can connect to the database from an old Oracle client (11gR2).
 
 ````
-[oracle@dbclient lab02_network]$ <copy>cd /home/oracle/HOL/lab02_network</copy>
+[oracle@dbclient lab02_network]$ <copy>cd /home/dbclient/HOL/lab02_network</copy>
 ````
 
 ````
@@ -50,7 +50,7 @@ SQL> SQL>
 
 ### Set minimum client authentication version to 12
 
-Now run the following commands from a terminal connection to the database.
+Now run the following commands from a terminal connection to the database (use the connection to **secdb** as **oracle**).
 
 ````
 [oracle@secdb lab02_network]$ <copy>cd /home/oracle/HOL/lab02_network</copy>
@@ -68,7 +68,7 @@ SQLNET.ALLOWED_LOGON_VERSION_SERVER = 12a
 (...)
 ````
 
-From **dbclient**, verify that we can no longer connect from an 11gR2 client:
+From the connection as **dbclient**, verify that we can no longer connect from an 11gR2 client:
 
 ````
 [oracle@dbclient lab02_network]$ <copy>./check_client_11gR2.sh</copy>
@@ -79,10 +79,10 @@ SQL> ERROR:
 ORA-28040: No matching authentication protocol
 ````
 
-However, we can still connect from the default 18c instant client:
+However, we can still connect from the default 19c instant client:
 
 ````
-[oracle@dbclient HOL]$ <copy>cd /home/oracle/HOL</copy>
+[oracle@dbclient HOL]$ <copy>cd /home/dbclient/HOL</copy>
 ````
 
 ````
@@ -125,7 +125,7 @@ DBSAT has produced the following finding:
 ![](./images/network_encryption.png)
 
 Encrypting network data provides data privacy so that unauthorized parties cannot view plaintext data as it passes over the network.
-To enforce a data integrity algorithm, a keyed, sequenced implementation of the Message Digest 5 (MD5) algorithm or the Secure Hash Algorithm (SHA-1 and SHA-2) should also be configured. Both of these hash algorithms create a checksum that changes if the data is altered in any way. This protection operates independently from the encryption process so you can enable data integrity with or without enabling encryption.
+To enforce data integrity an implementation of the Message Digest 5 (MD5) algorithm or the Secure Hash Algorithm (SHA-1 and SHA-2) should be configured. All of these hash algorithms create a checksum that changes if the data is altered in any way. This protection operates independently from the encryption process so you can enable data integrity with or without enabling encryption.
 
 Oracle Database therefore provides protection against two forms of active attacks:
 
@@ -139,7 +139,7 @@ The easiest way to verify whether a network encryption or a data integrity algor
 
 ### Check `network_service_banner` **Before** configuring Network Encryption
 
-Run the following query from the **dbclient**:
+Run the following query from the **dbclient** connection:
 
 ````
 [oracle@dbclient ~]$ <copy>cd ~/HOL/lab02_network/</copy>
@@ -176,7 +176,7 @@ The three lines in the result just reflect the capabilities of the Oracle Net’
 
 ### Configuring Network Encryption and Data Integrity
 
-It is possible to enforce Oracle Net encryption and set a data integrity algorithm by setting parameters in sqlnet.ora on the server side. Run the following commands from a terminal connection to the **secdb** server .
+It is possible to enforce Oracle Net encryption and set a data integrity algorithm by setting parameters in sqlnet.ora on the server side. Run the following commands from a terminal connection to the **secdb** server as **oracle**.
 
 ````
 [oracle@secdb ~]$ <copy>cd ~/HOL/lab02_network/</copy>
@@ -201,7 +201,7 @@ SQLNET.CRYPTO_CHECKSUM_TYPES_SERVER= (SHA256)
 
 ### Check `network_service_banner` after configuring Network Encryption
 
-Now run again the following query from the **dbclient**:
+Now run again the following query from the **dbclient** connection:
 
 ````
 [oracle@dbclient lab02_network]$ <copy>cd ~/HOL/lab02_network/</copy>
@@ -239,5 +239,5 @@ This completes the **Network Encryption** lab. You can continue with **Lab 3: Tr
 
 ## Acknowledgements ##
 
-- **Authors** - Adrian Galindo, PTS LAD & François Pons, PTS EMEA - Database Product Management - May 2020.
+- **Authors** - Adrian Galindo, PTS LAD & François Pons, PTS EMEA - Database Product Management - December 2020.
 - **Credits** - This lab is based on materials provided by Oracle Database Security Product Management.

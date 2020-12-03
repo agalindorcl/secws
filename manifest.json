@@ -61,12 +61,6 @@
             "filename":"./lab800/lab800_audit_vault.md"
         },
         {
-            "title": "Lab 9: Data Masking",
-            "description":"Lab 9: Data Masking",
-            "publisheddate": "04/21/2020",
-            "filename":"./lab900/lab900_data_masking.md"
-        },
-        {
             "title": "Lab 10: Running DBSAT and compare results",
             "description":"Lab 10",
             "publisheddate": "04/21/2020",
