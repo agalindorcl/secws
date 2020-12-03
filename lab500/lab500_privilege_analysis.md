@@ -8,7 +8,7 @@ The following is intended to outline our general product direction. It is intend
 
 ## Requirements ##
 
-Access to secdb virtual machine.
+Access to **secdb** virtual machine as **oracle**.
 
 ## Introduction  ##
 
@@ -18,7 +18,7 @@ In our example, we will reduce the privileges granted to **DBA\_NICOLE** to the 
 
 ## Step 1 : Check DBA\_NICOLE's current role ##
 
-**DBA\_NICOLE** is a junior DBA who was initially granted the full **DBA** role. Run the following script from a terminal window to the **secdb** server.
+**DBA\_NICOLE** is a junior DBA who was initially granted the full **DBA** role. Run the following script from a terminal window to the **secdb** server as **oracle**.
 
 ````
 [oracle@secdb ~]$ <copy>cd /home/oracle/HOL/lab05_pa</copy>
