@@ -30,7 +30,7 @@ Redaction can be implemented via Enterprise Manager (which benefits from pre-def
 ## Requirements ##
 
 * Session open to **secdb** with user **oracle**
-* session open to **dbclient** with user **oracle**   
+* session open to **secdb** with user **dbclient**   
 
 ## Creating a Simple Redaction Policy
 
@@ -44,7 +44,7 @@ Let us create simple redaction policies for low privileged users on these three 
 
 ## Step 1: Create a low privileged user
 
-Run the following script from a terminal window to the **secdb** server to create a low privileged user `hcm_clerk`:
+Run the following script from a terminal window to the **secdb** server as **oracle** to create a low privileged user `hcm_clerk`:
 
 ````
 [oracle@secdb ~]$ <copy>cd /home/oracle/HOL/lab04_redaction</copy>
@@ -88,7 +88,7 @@ Grant succeeded.
 
 ## Step 2: Create a redaction policy
 
-Run the following script from a terminal window to the **secdb** server:
+Run the following script from a terminal window to the **secdb** server as **oracle**:
 
 ````
 [oracle@secdb lab04_redaction]$ <copy>redac20_add_pol.sh</copy>
@@ -159,7 +159,7 @@ However note that **SYSTEM** has the **EXP\_FULL\_DATABASE** role which includes
 
 Let us run a quick test of our redaction policies.
 
-Run the following script from a terminal window to the **secdb** server:
+Run the following script from a terminal window to the **secdb** server as **oracle**:
 
 ````
 [oracle@secdb lab04_redaction]$ <copy>redac30_test_pol.sh</copy>
@@ -216,14 +216,14 @@ William              Gietz                              0 XXX-XX-6206     XXXXXX
 9 rows selected.
 ````
 
-Let us also test our redaction policies from the client machine **dbclient**.
+Let us also test our redaction policies from the client machine (connecting to **secdb** as **dbclient**).
 
 We will use an interesting **Window SQL** query which retrieves the highest salary in each department. Take the time to read the query and understand the syntax!
 
-Use a terminal window to **dbclient** (as oracle) and run the following:
+Use a terminal window to connect as **dbclient** and run the following:
 
 ````
-[oracle@dbclient ~]$ <copy>cd /home/oracle/HOL/lab04_redaction</copy>
+[oracle@dbclient ~]$ <copy>cd /home/dbclient/HOL/lab04_redaction</copy>
 ````
 
 ````
@@ -306,5 +306,5 @@ This completes the **Data Redaction** lab. You can continue with **Lab 5: Privil
 
 ## Acknowledgements
 
-- **Authors** - Adrian Galindo, PTS LAD & François Pons, PTS EMEA - Database Product Management - May 2020.
+- **Authors** - Adrian Galindo, PTS LAD & François Pons, PTS EMEA - Database Product Management - December 2020.
 - **Credits** - This lab is based on materials provided by Oracle Database Security Product Management.

@@ -10,7 +10,6 @@ The following is intended to outline our general product direction. It is intend
 
 * **Lab 02: "Network Encryption"** completed.
 * Session open to **secdb** with user **oracle**
-* session open to **dbclient** with user **oracle**   
 
 ## Introduction  ##
 

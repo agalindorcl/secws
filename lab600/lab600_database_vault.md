@@ -25,7 +25,7 @@ In this chapter, we will configure Database Vault for both the Container Databas
 
 We first create (as **SYS**) the common users which will become the **Database Vault Owner** and the **Database Vault Account Manager** and then call **configure_dv** to configure Database Vault.
 
-Run the following script from a terminal window to the secdb server.
+Run the following script from a terminal window to the **secdb** server as **oracle**.
 
 ````
 [oracle@secdb ~]$ <copy>cd /home/oracle/HOL/lab06_dbv/a_setup</copy>
@@ -277,7 +277,7 @@ In the following demo, we will execute the following scenario:
 
 ### Step 3a : Create a realm HR_REALM over the HR schema ###
 
-Create realm **HR_REALM** over the **HR** schema in **PDB1**. Run the following script from a terminal window to the secdb server
+Create realm **HR_REALM** over the **HR** schema in **PDB1**. Run the following script from a terminal window to the **secdb** server as **oracle**
 
 ````
 [oracle@secdb ]$ <copy>cd /home/oracle/HOL/lab06_dbv/b_realm</copy>
@@ -432,12 +432,12 @@ PL/SQL procedure successfully completed.
 
 ### Step 3f : Verification ###
 
-We can now test from the dbclient client that only **APPUSER1** (and not **APPUSER2**) is able to run the application. Run the following script from a terminal window to the **dbclient** client.
+We can now test from a connection as **dbclient** that only **APPUSER1** (and not **APPUSER2**) is able to run the application. Run the following script from a terminal window as **dbclient**.
 
 First from APPUSER1 :
 
 ````
-[oracle@dbclient ~]$ <copy>cd /home/oracle/HOL/lab06_dbv</copy>
+[oracle@dbclient ~]$ <copy>cd /home/dbclient/HOL/lab06_dbv</copy>
 ````
 
 ````
@@ -478,10 +478,10 @@ Regular Oracle Database Secure Application Roles are enabled by custom PL/SQL pr
 
 The advantage of basing database access for a role on a rule set is that you can store database security policies in one central place, as opposed to storing them in all your applications. Basing the role on a rule set provides a consistent and flexible method to enforce the security policies that the role provides. In this way, it is easy to enforce a trusted application path and reject all unexpected connections.
 
-In the following demo, we will allow connection as APPUSER2, but only when they come from **SQL*Plus** and from the **dbclient** client.
+In the following demo, we will allow connection as APPUSER2, but only when they come from **SQL*Plus** and from the expected **IP address**.
 
 Here is the outline of the configuration :
-*	Create **rules** to check a connection comes from **SQL*Plus** and from **dbclient**
+*	Create **rules** to check a connection comes from **SQL*Plus** and from the expected **IP address**
 *	Group the rules in a **rule set**
 *	Create a **Secure Application Role** linked to this rule set
 *	Grant privileges to the Secure Role
@@ -490,7 +490,7 @@ Here is the outline of the configuration :
 
 ### Step 4a : Create the rules ###
 
-Execute the following commands from **secdb** to create three rules.
+Execute the following commands from **secdb** as **oracle** to create three rules.
 
 ````
 [oracle@secdb ~]$ <copy>cd /home/oracle/HOL/lab06_dbv/d_secapprole</copy>
@@ -506,7 +506,7 @@ SQL>  */
 SQL> begin
   2    DBMS_MACADM.CREATE_RULE(
   3      rule_name   => 'Check host',
-  4      rule_expr   => 'rtrim(SYS_CONTEXT(''USERENV'',''HOST''),''.localdomain'')=''dbclient'''
+  4      rule_expr   => 'SYS_CONTEXT(''USERENV'',''IP_ADDRESS'')=''10.0.02'''
   5      );
   6  end;
   7  /
@@ -648,44 +648,18 @@ Grant succeeded.
 
 ### Step 4e : Verification ###
 
-We can now verify that it is not possible to connect as **APPUSER2** from **secdb**.
+You can now verify that if you create a connection as **appuser2** from **SQL Developer** (using the VNC connection to secdb), you won't be able to enable the secure application role:
+
+![Alt text](./images/img02.png " ")
+
+Then you won't have any privileges on the protected tables:
+
+![Alt text](./images/img03.png " ")
+
+However it works from the expected application **sqlplus** using the terminal connection as **dbclient** :
 
 ````
-[oracle@secdb ]$ <copy>cd /home/oracle/HOL/lab06_dbv/d_secapprole</copy>
-````
-
-````
-[oracle@secdb d_secapprole]$ <copy>test_secapprole_appuser2.sh</copy>
-
-(...)
-SQL> --
-SQL> -- try to enable the secure application role
-SQL> --
-SQL> exec dbms_macsec_roles.set_role('SECAPPROLE')
-BEGIN dbms_macsec_roles.set_role('SECAPPROLE'); END;
-
-*
-ERROR at line 1:
-ORA-47305: Rule Set violation on SET ROLE (SECAPPROLE)
-ORA-06512: at "DVSYS.DBMS_MACUTL", line 49
-ORA-06512: at "DVSYS.DBMS_MACUTL", line 398
-ORA-06512: at "DVSYS.DBMS_MACSEC", line 286
-ORA-06512: at "DVSYS.ROLE_IS_ENABLED", line 4
-ORA-06512: at "DVSYS.DBMS_MACSEC_ROLES", line 53
-ORA-06512: at line 1
-
-SQL> select * from hr.regions;
-select * from hr.regions
-                 *
-ERROR at line 1:
-ORA-00942: table or view does not exist
-(...)
-````
-
-… but it works from **dbclient** :
-
-````
-[oracle@dbclient ]$ <copy>cd /home/oracle/HOL/lab06_dbv</copy>
+[oracle@dbclient ]$ <copy>cd /home/dbclient/HOL/lab06_dbv</copy>
 ````
 
 ````
@@ -717,5 +691,5 @@ This completes the **Database Vault** lab. You can continue with **Lab 7: Databa
 
 ## Acknowledgements
 
-- **Authors** - Adrian Galindo, PTS LAD & François Pons, PTS EMEA - Database Product Management - May 2020.
+- **Authors** - Adrian Galindo, PTS LAD & François Pons, PTS EMEA - Database Product Management - December 2020.
 - **Credits** - This lab is based on materials provided by Oracle Database Security Product Management.

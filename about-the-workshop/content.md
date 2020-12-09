@@ -25,7 +25,7 @@ This workshop can be completed in one or two days, depending on the choice of la
 
 - **Lab 2: Network encryption** - Encrypting the network with Oracle Net.
 
-- **Lab 3: Transparent Data Encryption** - Encrypting On-Premise databases with Transparent Data Encryption.
+- **Lab 3: Transparent Data Encryption** - Encrypting On-Premises databases with Transparent Data Encryption.
 
 - **Lab 4: Data Redaction** - Using Data Redaction policies to prevent sensitive data from leaving the database unprotected (aka pseudonymization).
 
@@ -39,13 +39,9 @@ This workshop can be completed in one or two days, depending on the choice of la
 
 - **Lab 8: Audit Vault** - Using Audit Vault to manage audit data, view reports and create alerts.
 
-- **Data Safe (Part 1)** - Using Data Safe to bring DBSAT to Cloud databases and replace Audit Vault. PLease use the following link for [**Data Safe**](../DataSafe/ "Data Safe Labs") Labs 1 to 4.
+- **Data Safe** - Using Data Safe to manage security features in Oracle databases. PLease use the following link for [**Data Safe**](../DataSafe/ "Data Safe Labs") Labs 1 to 5.
 
-- **Lab 9: Data Masking** - Using Enterprise Manager Cloud Control Data Masking and Subsetting Pack to discover and anonymize sensitive data.
-
-- **Data Safe (Part 2)** - Using Data Safe to discover and anonymize sensitive data in Cloud databases.  PLease use the following link for [**Data Safe**](../DataSafe/ "Data Safe Labs") Lab 5.
-
-- **Lab 10: Running DBSAT again to compare results** - Using dbsat_diff companion utility to DBSAT to measure progress in securing a database.
+- **Lab 10 (optional) : Running DBSAT again to compare results** - Using dbsat_diff companion utility to DBSAT to measure progress in securing a database.
 
 
 ## Accessing the labs ##
@@ -64,7 +60,7 @@ This workshop can be completed in one or two days, depending on the choice of la
 
 **Authors**
 
-- Adrian Galindo, PTS LAD & François Pons, PTS EMEA - Database Product Management - April 2020.
+- Adrian Galindo, PTS LAD & François Pons, PTS EMEA - Database Product Management - December 2020.
 
 **Credits**
 

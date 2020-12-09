@@ -4,13 +4,9 @@ In this chapter, we will create connections to the labs environment and make sur
 
 Your environment is hosted on Oracle Cloud Infrastructure with the following compute instances (virtual machines):
 
-* **secdb**: a Linux box hosting an Oracle Database 19c with a pluggable database PDB1 and most of the lab scripts. They are designed to be easily re-usable and are included in your [**Student's Package**](./files/Package.zip) for your reference or use in future projects.
+* **secdb**: a Linux box hosting an Oracle Database 19c with a pluggable database PDB1 and the lab scripts. They are designed to be easily re-usable and can be downloaded from [**here**](./files/LabScripts.zip) for your reference or use in future projects.
 
-* **dbclient**: a simple client machine with both 11gR2, 12cR2 and 18c instant clients. We can use it for some of the labs (e.g. when setting up network encryption).
-
-* **av**: an Audit Vault Server 20.1 which will be configured as part of the labs.
-
-* **emcc**: an Enterprise Manager Cloud Control 13cR2 whose agent is deployed on secdb.
+* **av**: an Audit Vault Server 20c which will be configured as part of the labs.
 
 The virtual machines can be accessed by using an **SSH** client (**Putty**, **MobaXterm**) or with `ssh` from a terminal (bash, Mac or Linux).
 
@@ -25,13 +21,19 @@ For secdb, **VNC** has also been configured to provide a GUI to the desktop.
 * VNC client software.
 
 
-## Step 1: Create SSH connections to secdb and dbclient ##
+## Step 1: Create SSH connections to secdb ##
 
-The instructor will explain how to identify the public IPs to the four virtual machines to be used.
+We need to create two connections to **secdb**.
 
-### From Windows
+* The first connection, as user **oracle**, will be used to connect to the database environment.
+* The second connection, as user **dbclient**, will be used to connect to a client environment configured to use different versions of the Oracle Instant Client.
 
-Using the Public IPs, open a SSH client like **Putty** and configure two connections to **secdb** and **dbclient**. Here is an example for **secdb**:
+The instructor will explain how to identify the public IP to be used.
+
+### Step 1a - connect to secdb as oracle (PuTTY example)
+
+Using the Public IP, open a SSH client like **Putty** and configure the first connection to **secdb** as user **oracle**.
+
 
 ![Connect to the instance](./images/Lab000_Step1_1.png "")
 
@@ -43,7 +45,7 @@ Select the private key in **Connection** -> **SSH** -> **Auth** menu and save th
 
 ![Choose private key](./images/Lab000_Step1_3.png )
 
-Additionally you can specify a keepalive of 10 seconds to prevent disconnections.
+Additionally you should specify a keepalive of 10 seconds to prevent disconnections.
 
 ![Keepalive](./images/Lab000_Step1_4.png "")
 
@@ -51,7 +53,13 @@ Also enable compression for better performance.
 
 ![Compression](./images/Lab000_Step1_5.png )
 
-Finally, and **only for secdb**, create the following **tunnel**. VNC connections are secure and only possible through an SSH tunnel. Please create the following SSH tunnel in secdb's connection:
+### Step 1b - connect to secdb as dbclient (PuTTY example)
+
+Proceed with the exact same steps to create a second connection to **secdb**, this time as user **dbclient**.
+
+### Step 1c - create a tunnel for VNC connections
+
+Finally, and **only for the connection as oracle**, create the following **tunnel**. VNC connections are secure and only possible through an SSH tunnel. Please create the following SSH tunnel in secdb's connection:
 
 *	Source port : 5902
 *	Destination : localhost:5902
@@ -81,7 +89,7 @@ The syntax to create an SSH tunnel to secdb enabling a VNC connection should be:
 
   ssh -L 5902:localhost:5902 -i .ssh/dbseckey oracle@ip.address
 
-## Step 2: Create a GUI connection to secdb's desktop
+## Step 2: Create a GUI connection to secdb's desktop as oracle
 
 For some labs, it will be easier to use a VNC connection to secdb. To do this, first connect using PuTTY to create the SSH tunnel and then launch a VNC client such as TigerVNC Viewer and connect to **localhost:2**
 
@@ -97,5 +105,5 @@ You now can start the workshop labs.
 
 ## Acknowledgements
 
-- **Authors** - Adrian Galindo, PTS LAD & François Pons, PTS EMEA - Database Product Management - May 2020.
+- **Authors** - Adrian Galindo, PTS LAD & François Pons, PTS EMEA - Database Product Management - December 2020.
 - **Credits** - This lab is based on materials provided by Oracle Database Security Product Management.

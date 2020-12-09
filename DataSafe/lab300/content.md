@@ -93,7 +93,7 @@ While the audit data is being collected, click **Done**.
 
 ## STEP 3: Execute some account management activity on the database
 
-Using SQL Developer as user **ADMIN**, execute the following statements:
+Using SQL Developer, disconnect from **ADMIN**, then connect again and execute the following statements:
 
 ````
 <copy>
@@ -102,6 +102,8 @@ grant DWROLE to bob;
 drop user bob;
 </copy>
 ````
+
+New auditing policies do not take effect until after the audited users (or users who have been granted the roles associated with the policy) log into the database instance. For this reason, you should disconnect as ADMIN and reconnect before executing the above statements so that they can be captured by our recently created audit policies.
 
 ![alt text](./images/img14.png " ")
 
