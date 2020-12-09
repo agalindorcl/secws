@@ -101,12 +101,56 @@ Click the **Close** button (**X**) to close the expanded chart.
 
 ![alt text](./images/img17.png " ")
 
-## STEP 2: Mask sensitive data by using Data Masking
+## STEP 2: Create a full clone of your ATP-S instance
 
-The Data Masking wizard generates a masking policy for your target database based on a sensitive data model. In the wizard, you select the sensitive columns that you want to mask and the masking formats to use.
-Click **Exit**.
+Let's consider we want to mask sensitive data in a clone of our Autonomous Database before performing some tests.
 
-Now select **Data Masking** from the **Home** menu. Select your database and click **Continue**.
+From the main hamburger menu in the OCI console, go to the Autonomous Database section and select your ATP-S instance.
+
+In the **More Actions** menu of the details page, select **Create clone**.
+
+![alt text](./images/img36.png " ")
+
+Create a full clone with the following options:
+
+* Clone type : full clone
+* Clone source : clone from database instance
+* Compartment : keep value
+* Source database name : ATP-[your-name]
+* Display Name : **ATP-[your-name]2**
+* Database Name : **ATP[your-initials]2**
+* DB version : 19c
+* CPU Core Count : 1
+* Storage (TB) : 1
+* Auto scaling : **Leave Unchecked**
+* Password : **OraclePTS#2020**
+* Network access : Leave default selection (Allow secure access from everywhere)
+* License Type : BYOL (My Organization Already owns Oracle Database…)
+
+This process will take around 10 minutes to complete.
+
+## STEP 3: Register the cloned database to Data Safe
+
+In order to mask its sensitive data, we now need to register the cloned database to Data Safe.
+
+Please replicate the steps in **lab 2** and do not forget to run the following SQL as **ADMIN**:
+
+````
+<copy>
+EXECUTE DS_TARGET_UTIL.GRANT_ROLE('DS$DATA_DISCOVERY_ROLE');
+EXECUTE DS_TARGET_UTIL.GRANT_ROLE('DS$DATA_MASKING_ROLE');
+EXECUTE DS_TARGET_UTIL.GRANT_ROLE('DS$AUDIT_SETTING_ROLE'); 
+</copy>
+````
+
+## STEP 4: Mask sensitive data by using Data Masking
+
+
+We are now ready to mask the sensitive data in our cloned database.
+
+The Data Masking wizard will help us to create a masking policy for the target database based on the sensitive data model created earlier.
+
+Select **Data Masking** from the **Home** menu. Select your cloned database and click **Continue**.
 
 ![alt text](./images/img18.png " ")
 
@@ -186,7 +230,7 @@ Review the report, and then close it.
 
 ![alt text](./images/img34.png " ")
 
-## STEP 3: View masked data in SQL Developer
+## STEP 5: View masked data in SQL Developer
 
 Now you can use SQL Developer again yo view the anonymized data in the HCM schema.
 
